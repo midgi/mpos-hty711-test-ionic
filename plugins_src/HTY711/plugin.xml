@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-hty711" version="0.0.1"
+    xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>HTY711</name>
+    <js-module name="HTY711" src="www/HTY711.js">
+        <clobbers target="window.plugins.HTY711" />
+    </js-module>
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="HTY711">
+                <param name="android-package" value="cordova.plugin.hty711.HTY711" />
+            </feature>
+        </config-file>
+        <config-file parent="/*" target="AndroidManifest.xml"></config-file>
+        <lib-file src="src/android/libs/TYMPosEMVLib_V1.00.03.R5868.jar"/>
+        <source-file src="src/android/HTY711.java" target-dir="src/cordova/plugin/hty711/HTY711" />
+        <source-file src="src/android/CardInfo.java" target-dir="src/cordova/plugin/hty711/CardInfo" />
+        <source-file src="src/android/DeviceDelegate.java" target-dir="src/cordova/plugin/hty711/DeviceDelegate" />
+        <source-file src="src/android/DeviceListViewAdapter.java" target-dir="src/cordova/plugin/hty711/DeviceListViewAdapter" />
+        <source-file src="src/android/PrintMessage.java" target-dir="src/cordova/plugin/hty711/PrintMessage" />
+        <source-file src="src/android/SharedMSG.java" target-dir="src/cordova/plugin/hty711/SharedMSG" />
+        <source-file src="src/android/UIMessage.java" target-dir="src/cordova/plugin/hty711/UIMessage" />
+    </platform>
+</plugin>

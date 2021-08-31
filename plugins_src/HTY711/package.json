@@ -1,0 +1,21 @@
+{
+  "name": "cordova-plugin-hty711",
+  "version": "0.0.1",
+  "description": "Plugin for MPOS HTY711 from china",
+  "cordova": {
+    "id": "cordova-plugin-hty711",
+    "platforms": [
+      "android"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "mpos",
+    "hty711"
+  ],
+  "author": {
+    "name": "jose"
+  },
+  "license": "ISC"
+}

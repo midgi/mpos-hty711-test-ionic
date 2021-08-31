@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Blank</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <span>status: {{status}}</span> <br>
+    <span>response: {{result|json}}</span> <br>
+    <span>is connected: {{isConnected_}}</span> <br>
+    <IonButton color="primary" (click)="readGiftCard()">Leer giftcard</IonButton>
+    <IonButton color="secondary" (click)="customInput()">Custom Input</IonButton>
+  </div>
+</ion-content>

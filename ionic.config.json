@@ -1,0 +1,7 @@
+{
+  "name": "ble-pos",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

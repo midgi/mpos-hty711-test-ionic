@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HTY711 } from '@ionic-native/hty-711/ngx';
 import { Platform } from '@ionic/angular';
-import { BehaviorSubject, from, interval, Observable, Subscription } from 'rxjs';
-import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, from, interval, Observable, of, Subscription } from 'rxjs';
+import { delay, filter, map, startWith, switchMap, take, tap } from 'rxjs/operators';
 
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
@@ -72,11 +72,17 @@ export class HomePage implements OnInit, OnDestroy {
   autoConnectDevice(){
     this.subscriptions.push(
       interval(5000).pipe(
-        filter(num=>this.scanning == false && this.isConnected_ == false)
+        filter(num=>this.scanning == false),
+        switchMap(()=>this.isConnected()),
+        tap((isConnected)=>{
+          this.isConnected_ = isConnected;
+        }),
+        filter((isConnected)=>isConnected == false)
       ).subscribe(()=>{
         console.log("autoconnectdevice: ");
         console.log("is scanning: "+this.scanning);
         console.log("is connected: "+this.isConnected_);
+        this.bleSubs.map(sub=>sub.unsubscribe());
         this.connectDevice();
       })
     )
@@ -109,6 +115,9 @@ export class HomePage implements OnInit, OnDestroy {
         console.log("isconnected: ");console.log(isConnected);
         this.result = isConnected;
         this.isConnected_ = isConnected;
+        if(isConnected){
+          this.bleSubs.map(sub=>sub.unsubscribe());
+        }
       })
     );
   }
@@ -116,10 +125,45 @@ export class HomePage implements OnInit, OnDestroy {
   readGiftCard(){
     if(!this.isConnected_) return;
     console.log("calling readgiftcard");
+    // this.subscriptions.push(
+    //   // from(this.hty711.readGiftCard([500])).pipe(
+    //   from(this.hty711.readCard([])).pipe(
+    //   ).subscribe((resp)=>{
+    //     console.log("read gift card response: " + resp);
+    //     this.result = resp;
+    //     of(null).pipe(
+    //       delay(1000),
+    //       switchMap(()=>this.confirmTransaction("Lectura de giftcard exitosa"))
+    //     )
+    //     .subscribe((resp)=>console.log('response: '+resp));
+    //   })
+    // );
     this.subscriptions.push(
-      from(this.hty711.readGiftCard([500])).subscribe((resp)=>{
-        this.result = resp;
-      })
+      // from(this.hty711.readGiftCard([500])).pipe(
+      //   tap(()=>console.log("card readed")),
+        
+      // ).subscribe((resp)=>{
+      //   this.subscriptions.push(interval(1500).pipe(
+      //     tap(()=>console.log("interval")),
+      //     switchMap(()=>from(this.hty711.cardReaded([]))),
+      //     tap(()=>console.log("consulting if card readed")),
+      //     filter(cardReaded=>cardReaded=="true"),
+      //     tap(()=>console.log("card readed = true")),
+      //     take(1),
+      //     switchMap(()=>from(this.hty711.getCardInfo([]))),
+      //     tap(()=>console.log("get Card info"))
+      //   ).subscribe(resp=>{
+      //     console.log("read gift card response: " + resp);
+      //     this.result = resp;
+      //   }));
+      from(this.hty711.readGiftCard([500])).pipe(
+        
+        // of(null).pipe(
+        //   delay(1000),
+        //   switchMap(()=>this.confirmTransaction("Lectura de giftcard exitosa"))
+        // )
+        // .subscribe((resp)=>console.log('response: '+resp));
+      ).subscribe((resp)=>console.log('response: '+resp))
     );
   }
 
@@ -153,6 +197,10 @@ export class HomePage implements OnInit, OnDestroy {
   stopScan(){
     console.log("calling stopScan")
     return from(this.hty711.stopScan([]));
+  }
+
+  confirmTransaction(text){
+    return from(this.hty711.confirmTransaction([text]));
   }
 
   checkPermissions(){

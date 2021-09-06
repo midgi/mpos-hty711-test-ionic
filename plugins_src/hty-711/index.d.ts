@@ -35,6 +35,11 @@ export declare class HTY711Original extends IonicNativePlugin {
     isConnected(arg0: any): Promise<any>;
     startScan(arg0: any): Promise<any>;
     stopScan(arg0: any): Promise<any>;
+    confirmTransaction(arg0: any): Promise<any>;
+    readCard(arg0: any): Promise<any>;
+    getCardInfo(arg0: any): Promise<any>;
+    cardReaded(arg0: any): Promise<any>;
+    cancelReadCard(arg0: any): Promise<any>;
 }
 
 export declare const HTY711: HTY711Original;
